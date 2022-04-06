@@ -11,12 +11,12 @@ def parse_csv(contents, filename):
     decoded = base64.b64decode(content_string)
     df = pd.read_csv(io.StringIO(decoded.decode('utf-8')))
     df.columns = df.columns.str.replace(' ', '')
-    df = categorize(df)
-    return df
+    df, kmeans = categorize(df)
+    return df, kmeans
 
 
 def categorize(df: pd.DataFrame):
-    np_array = np.array(df.drop('employee_ID', inplace=False, axis=1))
-    kmeans = KMeans(n_clusters=3, random_state=0).fit(np_array)
+    np_array = np.array(df.drop(['employee_ID', 'category'], inplace=False, axis=1))
+    kmeans = KMeans(n_clusters=3, max_iter=1000).fit(np_array)
     df['cat'] = kmeans.labels_
-    return df
+    return df, kmeans
