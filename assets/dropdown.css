@@ -1,6 +1,6 @@
 /* input box */
 .Select-control {
-    background-color: black;
+    background-color: #2a2929;
 }
 
 
@@ -17,14 +17,14 @@
 
 /* dropdown menu options */
 .VirtualizedSelectOption {
-    background-color: black;
+    background-color: #2a2929;
     color: white;
  }
 
 
 /* dropdown menu hover effect */
 .VirtualizedSelectFocusedOption {
-    background-color: black;
+    background-color: #2a2929;
     opacity: .7;
 }
 

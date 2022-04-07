@@ -21,14 +21,16 @@ def process_data(n_clicks, contents, filename):
     res_3d = res_pie = html.Div(children=[])
     if contents is not None:
         res_3d, res_pie = generate_graphs(contents, filename)
+        if 'category' not in df.columns:
+            res_pie = html.Div()
     return res_3d, f"{filename} is currently used", res_pie
 
 
 def generate_pie_dropdown():
     res = dbc.Row(children=[])
     columns = ["CO2_in_g", "distance_in_m", "time_in_s"]
-    dropdown = dcc.Dropdown(columns, "CO2_in_g", id="pie-dropdown", searchable=False)
-    res.children.append(dbc.Col([dbc.Row(dropdown), dbc.Row(dcc.Graph(id="pie_chart_graph"))]))
+    dropdown = dcc.Dropdown(columns, "CO2_in_g", id="pie-dropdown", className="mb-2", searchable=False)
+    res.children.append(dbc.Col([html.H2("Global observations"), dbc.Row(dcc.Graph(id="pie_chart_graph")), dbc.Row(dropdown)]))
     return res
 
 
@@ -61,8 +63,11 @@ def generate_3d_graphs(kmeans):
             dbc.Row([dbc.Col([html.H2("Computed segmentation"), dcc.Graph(figure=figure)], width=6),
                      dbc.Col([html.H2("Real segmentation"), dcc.Graph(figure=fig)], width=6)]))
     else:
-        res.children.append(dbc.Row(dbc.Col(dcc.Graph(figure=figure))))
+        res.children.append(
+            dbc.Row([dbc.Col([html.H2("Computed segmentation"), dcc.Graph(figure=figure)], width=6),
+                     dbc.Col([generate_pie_dropdown()], width=6)]))
     return res
+
 
 @app.callback(Output("collapse_button", "is_open"),
               Input("process-button", "n_clicks"),

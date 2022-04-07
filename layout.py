@@ -24,7 +24,7 @@ upload_layer = html.Div(children=[dbc.Row(dbc.Col(dcc.Upload(
     dbc.Row(dbc.Col(dbc.Button("Launch process", id="process-button", color="info", n_clicks=0),
                     className="d-grid gap-2", width=2), justify="center")])
 
-start_layout = dbc.Container(children=[
+start_layout = html.Div(children=[
     dbc.Collapse([dbc.Row([dbc.Col([dbc.Button("New upload", id="open_upload", className="h-100")],
                                    id="button_place", width=2)],  justify="left", className="my-3"),
                   dbc.Row(dbc.Col(dbc.Alert(id="show_filename", color="success")), className="my-3")],
