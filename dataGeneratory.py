@@ -1,5 +1,3 @@
-import random
-
 import numpy as np
 import pandas as pd
 from time import time
@@ -7,7 +5,8 @@ from random import choices, seed, randint
 
 
 # 7g/Km for electric bikes
-# 5g/Km for classic bikes (https://www.bikeradar.com/features/long-reads/cycling-environmental-impact/#:~:text=Adding%20the%2016g%20per%20kilometre,emissions%20come%20from%20food%20production.)
+# 5g/Km for classic bikes
+# (https://www.bikeradar.com/features/long-reads/cycling-environmental-impact/#:~:text=Adding%20the%2016g%20per%20kilometre,emissions%20come%20from%20food%20production.)
 # 122.3 g CO2/km for cars (average) (https://www.eea.europa.eu/ims/co2-performance-of-new-passenger)
 #
 # LA STIB

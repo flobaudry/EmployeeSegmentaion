@@ -4,6 +4,7 @@ from process import parse_csv_api
 import pandas as pd
 from io import StringIO
 
+
 @server.route("/dash")
 def my_dash_app():
     return app.index()
