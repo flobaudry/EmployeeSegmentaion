@@ -6,13 +6,19 @@ import numpy as np
 import pandas as pd
 
 
-def parse_csv(contents, filename, cluster_number):
+def parse_csv(contents, cluster_number):
     content_type, content_string = contents.split(",")
     decoded = base64.b64decode(content_string)
     df = pd.read_csv(io.StringIO(decoded.decode('utf-8')))
     df.columns = df.columns.str.replace(' ', '')
     df, kmeans = categorize(df, cluster_number)
     return df, kmeans
+
+
+def parse_csv_api(df, cluster_number):
+    df.columns = df.columns.str.replace(' ', '')
+    df, kmeans = categorize(df, cluster_number)
+    return df
 
 
 def define_transport(df, cluster_number):

@@ -43,7 +43,7 @@ def generate_pie_graphs(value):
 def generate_graphs(contents, filename):
     global df
     cluster_number = 3
-    df, kmeans = parse_csv(contents, filename, cluster_number)
+    df, kmeans = parse_csv(contents, cluster_number)
     load_figure_template("darkly")
 
     return generate_3d_graphs(kmeans), generate_pie_dropdown()
