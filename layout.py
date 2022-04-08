@@ -31,7 +31,8 @@ start_layout = html.Div(children=[
                  id="collapse_button", is_open=False, className="m-3"),
     dbc.Collapse(upload_layer, id="upload_collapse", is_open=True),
     dbc.Row(dbc.Col(id='3Dgraph', width=12), className="m-3", justify="center"),
-    dbc.Row(id="pie_charts", className="m-3")
+    dbc.Row(id="pie_charts", className="m-3"),
+    dbc.Row(id="histogram", className="m-3")
 ]
 )
 

@@ -14,19 +14,20 @@ df: pd.DataFrame
 @app.callback(Output("3Dgraph", "children"),
               Output("show_filename", "children"),
               Output("pie_charts", "children"),
+              Output("histogram", "children"),
               Input("process-button", "n_clicks"),
               State("upload-employees", "contents"),
               State("upload-employees", "filename"), prevent_initial_call=True)
 def process_data(n_clicks, contents, filename):
-    res_3d, res_pie = generate_graphs(contents, filename)
+    res_3d, res_pie, res_histogram = generate_graphs(contents, filename)
     if 'category' not in df.columns:
         res_pie = html.Div()
-    return res_3d, f"{filename} is currently used", res_pie
+    return res_3d, f"{filename} is currently used", res_pie, res_histogram
 
 
 def generate_pie_dropdown():
     res = dbc.Row(children=[])
-    columns = ["CO2_in_g", "distance_in_m", "time_in_s"]
+    columns = ["CO2 in g", "distance in m", "time in s", "total count"]
     dropdown = dcc.Dropdown(columns, "CO2_in_g", id="pie-dropdown", className="mb-2", searchable=False)
     res.children.append(
         dbc.Col([html.H2("Global observations"), dbc.Row(dcc.Graph(id="pie_chart_graph")), dbc.Row(dropdown)]))
@@ -36,8 +37,23 @@ def generate_pie_dropdown():
 @app.callback(Output("pie_chart_graph", "figure"),
               Input("pie-dropdown", "value"))
 def generate_pie_graphs(value):
-    return px.pie(df, values=value, names="transport_mean")
+    if value == "total count":
+        df["count"] = 1
+        value = "count"
+    res = px.pie(df, values=value.replace(" ", "_"), names="transport_mean")
+    return res
 
+
+def generate_hist_graph():
+    fig = go.Figure()
+    fig.add_trace(go.Histogram(histfunc="avg", x=df["transport_mean"], y=df["CO2_in_g"], name="average CO2 emission", marker_color="#ffbb00"))
+    fig.add_trace(go.Histogram(histfunc="avg", x=df["transport_mean"], y=df["distance_in_m"], name="average distance", marker_color="#00fff7"))
+    fig.add_trace(go.Histogram(histfunc="avg", x=df["transport_mean"], y=df["time_in_s"], name="average time", marker_color="#ff00dd"))
+    fig.update_layout(height=600)
+
+
+    res = dbc.Col([html.H2("Averages"), dcc.Graph(id="histogram", figure=fig)])
+    return res
 
 def generate_graphs(contents, filename):
     global df
@@ -45,7 +61,7 @@ def generate_graphs(contents, filename):
     df, kmeans = parse_csv(contents, cluster_number)
     load_figure_template("darkly")
 
-    return generate_3d_graphs(kmeans), generate_pie_dropdown()
+    return generate_3d_graphs(kmeans), generate_pie_dropdown(), generate_hist_graph()
 
 
 def generate_3d_graphs(kmeans):
