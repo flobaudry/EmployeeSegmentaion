@@ -1,7 +1,7 @@
 from app import app
+from waitress import serve
 from route import *
 
 from callbacks import process_data, load_data
 
-if __name__ == '__main__':
-    app.run_server()
+serve(app.server, port=8050)
