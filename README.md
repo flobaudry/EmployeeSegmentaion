@@ -39,7 +39,7 @@ Once on the webpage, you need to upload a CSV file with the following format:
 | 2           | 1223          | 983       | 8707     |
 | 3           | 610           | 562       | 1762     |
 
-The headers must follow the above example, and the data must be reel numbers.
+In your CSV file, you need at least the last three columns strictly respecting the names. The data contained must be real numbers
 
 ### API
 The application has an API that can be accessed using the following link **http://[yourServerAddress]/api**
