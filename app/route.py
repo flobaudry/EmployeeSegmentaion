@@ -28,4 +28,4 @@ def api_request():
         return "No data given"
     df = parse_csv_api(df, 3)
     df.set_index("employee_ID", inplace=True)
-    return str(df.to_csv())
+    return df.to_csv()
