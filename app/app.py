@@ -1,6 +1,6 @@
 import dash
-from flask import Flask
 import dash_bootstrap_components as dbc
+from flask import Flask
 from layout import layout
 
 server = Flask(__name__)

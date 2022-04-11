@@ -1,12 +1,12 @@
 from app import app
 from dash import html, dcc
 from dash_bootstrap_templates import load_figure_template
+from dash.dependencies import Input, Output, State
 import plotly.express as px
 import plotly.graph_objects as go
-from dash.dependencies import Input, Output, State
 import dash_bootstrap_components as dbc
-from process import parse_csv
 import pandas as pd
+from process import parse_csv
 
 df: pd.DataFrame
 COLOR_MAP = {"car": "#B71E1D", "bike": "#06A843", "public transport": "#324C71"}
@@ -24,7 +24,7 @@ CAT_ORDER = {"transport_mean": ["car", "public transport", "bike"], "category": 
 def process_data(n_clicks, contents, filename):
     show_filename_text = f"{filename} is currently used"
     show_filename_color = "success"
-    res_3d, res_pie, res_histogram = generate_graphs(contents, filename)
+    res_3d, res_pie, res_histogram = generate_graphs(contents)
     if len(res_3d.children) == 0:
         show_filename_text = "Bad input format"
         show_filename_color = "danger"
@@ -55,7 +55,7 @@ def generate_3d_graphs(kmeans):
     figure.add_trace(go.Scatter3d(x=kmeans.cluster_centers_[:, 0], y=kmeans.cluster_centers_[:, 1],
                                   z=kmeans.cluster_centers_[:, 2], mode="markers", name="centroids", marker_symbol="x",
                                   marker_color="white", marker_opacity=0.8))
-    if 'category' in df.columns:
+    if "category" in df.columns:
         fig = px.scatter_3d(df, x="distance_in_m", y="time_in_s", z="CO2_in_g", color="category", template="darkly")
         res.children.append(
             dbc.Row([dbc.Col([html.H2("Computed segmentation"), dcc.Graph(figure=figure)], width=6),
@@ -111,9 +111,12 @@ def show_collapse_button(button, contents):
 @app.callback(Output("upload_collapse", "is_open"),
               Input("open_upload", "n_clicks"),
               Input("process-button", "n_clicks"),
+              Input("show_filename", "color"),
               State("upload_collapse", "is_open"), prevent_initial_call=True
               )
-def toggle_collapse(button, process_button, collapse):
+def toggle_collapse(button, process_button, error, collapse):
+    if error == "danger":
+        return True
     return not collapse
 
 
