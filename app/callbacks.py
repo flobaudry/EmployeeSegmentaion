@@ -9,7 +9,9 @@ from process import parse_csv
 import pandas as pd
 
 df: pd.DataFrame
-COLOR_MAP = {"car": "#B71E1D", "bike": "#324C71", "public transport": "#06A843"}
+COLOR_MAP = {"car": "#B71E1D", "bike": "#06A843", "public transport": "#324C71"}
+CAT_ORDER = {"transport_mean": ["car", "public transport", "bike"], "category": ["car", "public", "bike"]}
+
 
 @app.callback(Output("3Dgraph", "children"),
               Output("show_filename", "children"),
@@ -32,7 +34,7 @@ def process_data(n_clicks, contents, filename):
     return res_3d, show_filename_text, show_filename_color, res_pie, res_histogram
 
 
-def generate_graphs(contents, filename):
+def generate_graphs(contents):
     global df
     cluster_number = 3
     colors = {"car": "red", "bike": "blue", "public transport": "green"}
@@ -48,7 +50,7 @@ def generate_graphs(contents, filename):
 def generate_3d_graphs(kmeans):
     res = html.Div(children=[])
     figure = px.scatter_3d(df, x="distance_in_m", y="time_in_s", z="CO2_in_g", color="transport_mean",
-                           template="darkly", color_discrete_map=COLOR_MAP)
+                           template="darkly", color_discrete_map=COLOR_MAP, category_orders=CAT_ORDER)
 
     figure.add_trace(go.Scatter3d(x=kmeans.cluster_centers_[:, 0], y=kmeans.cluster_centers_[:, 1],
                                   z=kmeans.cluster_centers_[:, 2], mode="markers", name="centroids", marker_symbol="x",
