@@ -26,6 +26,9 @@ def api_request():
         df = pd.read_csv(data)
     else:
         return "No data given"
-    df = parse_csv_api(df, 3)
-    df.set_index("employee_ID", inplace=True)
-    return df.to_csv()
+    try:
+        df = parse_csv_api(df, 3)
+        df.set_index("employee_ID", inplace=True)
+        return df.to_csv()
+    except ValueError:
+        return "Error: Bad data input"

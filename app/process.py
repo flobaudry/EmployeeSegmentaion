@@ -5,21 +5,26 @@ import numpy as np
 
 import pandas as pd
 
-
 def parse_csv(contents, cluster_number):
     content_type, content_string = contents.split(",")
     decoded = base64.b64decode(content_string)
     df = pd.read_csv(io.StringIO(decoded.decode('utf-8')))
     df.columns = df.columns.str.replace(' ', '')
+    if not test_columns(df):
+        raise ValueError
     df, kmeans = categorize(df, cluster_number)
     return df, kmeans
 
 
 def parse_csv_api(df, cluster_number):
     df.columns = df.columns.str.replace(' ', '')
+    if not test_columns(df):
+        raise ValueError
     df, kmeans = categorize(df, cluster_number)
     return df
 
+def test_columns(df: pd.DataFrame):
+    return all(col in list(df.columns) for col in ["CO2_in_g", "distance_in_m", "time_in_s"])
 
 def define_transport(df, cluster_number):
     categories = []
