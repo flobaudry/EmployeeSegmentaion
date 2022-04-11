@@ -9,7 +9,7 @@ from process import parse_csv
 import pandas as pd
 
 df: pd.DataFrame
-
+COLOR_MAP = {"car": "#B71E1D", "bike": "#324C71", "public transport": "#06A843"}
 
 @app.callback(Output("3Dgraph", "children"),
               Output("show_filename", "children"),
@@ -35,8 +35,10 @@ def process_data(n_clicks, contents, filename):
 def generate_graphs(contents, filename):
     global df
     cluster_number = 3
+    colors = {"car": "red", "bike": "blue", "public transport": "green"}
     try:
         df, kmeans = parse_csv(contents, cluster_number)
+        df["color"] = df["transport_mean"].apply(lambda x: colors.get(x))
         load_figure_template("darkly")
         return generate_3d_graphs(kmeans), generate_pie_dropdown(), generate_hist_graph()
     except ValueError:
@@ -46,11 +48,11 @@ def generate_graphs(contents, filename):
 def generate_3d_graphs(kmeans):
     res = html.Div(children=[])
     figure = px.scatter_3d(df, x="distance_in_m", y="time_in_s", z="CO2_in_g", color="transport_mean",
-                           template="darkly")
+                           template="darkly", color_discrete_map=COLOR_MAP)
 
     figure.add_trace(go.Scatter3d(x=kmeans.cluster_centers_[:, 0], y=kmeans.cluster_centers_[:, 1],
-                                  z=kmeans.cluster_centers_[:, 2], mode="markers", name="centroids",
-                                  marker=go.scatter3d.Marker(opacity=0.7, size=16, color=['blue', 'red', 'green'])))
+                                  z=kmeans.cluster_centers_[:, 2], mode="markers", name="centroids", marker_symbol="x",
+                                  marker_color="white", marker_opacity=0.8))
     if 'category' in df.columns:
         fig = px.scatter_3d(df, x="distance_in_m", y="time_in_s", z="CO2_in_g", color="category", template="darkly")
         res.children.append(
@@ -80,7 +82,7 @@ def generate_hist_graph():
 def generate_pie_dropdown():
     columns = ["CO2 in g", "distance in m", "time in s", "total count"]
     res = dbc.Row(children=[])
-    dropdown = dcc.Dropdown(columns, "CO2_in_g", id="pie-dropdown", className="mb-2", searchable=False)
+    dropdown = dcc.Dropdown(columns, "CO2 in g", id="pie-dropdown", className="mb-2", searchable=False)
     res.children.append(
         dbc.Col([html.H2("Global observations"), dbc.Row(dcc.Graph(id="pie_chart_graph")), dbc.Row(dropdown)]))
     return res
@@ -92,7 +94,8 @@ def generate_pie_graphs(value):
     if value == "total count":
         df["count"] = 1
         value = "count"
-    res = px.pie(df, values=value.replace(" ", "_"), names="transport_mean")
+    res = px.pie(df, values=value.replace(" ", "_"), names="transport_mean",
+                 color="transport_mean", color_discrete_map=COLOR_MAP)
     return res
 
 
