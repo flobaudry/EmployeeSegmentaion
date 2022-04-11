@@ -60,6 +60,13 @@ You can find an example in the [test_requests.py](test_requests.py) file
     
 ## Docker
 
-A Docker image of this project has been created in order to facilitate the deployment of the application. It can be found [here](https://hub.docker.com/repository/docker/frahin/employee-seg/general)
+A Docker image of this project has been created in order to facilitate the deployment of the application. It can be found [here](https://hub.docker.com/repository/docker/flobaudry/employee-segmentation)
 
 To start the docker, you need to bind the ports. As said before, the default port of the application is **8050**.
+
+If you have docker installed, you can run:
+```bash
+docker pull flobaudry/employee-segmentation
+docker run -d -p 8050:8050 flobaudry/employee-segmentation
+```
+after that, you should be able to access the web application using [this address](http://127.0.0.1:8050/dash)
