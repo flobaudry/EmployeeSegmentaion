@@ -1,6 +1,8 @@
 # EmployeeSegmentaion
 
-EmployeeSegmentation is a python app that categorizes the mean of transport (car, public transport and bike) used by different employees.
+EmployeeSegmentation is a python app that categorizes the means of transport (car, public transport and bike) used by different employees.
+
+It uses Dash and Flask for the webApp and the API. The server is managed by Waitress.
 
 ## Prerequisites
 In order to run the program, you need to install all the requirements listed in [requirements.txt](requirements.txt) using pip
@@ -26,7 +28,7 @@ python waitressServer.py
 The default port is the port 8050. You can change this directly in the code if you want to use a different port.
 
 ### Webpage
-You can access the webpage by going to the root adress of your server. It will automatically be redirected to the **http://[yourServerAddress]/dash** page which contains the webApp 
+You can access the webpage by going to the root address of your server. It will automatically be redirected to the **http://[yourServerAddress]/dash** page which contains the webApp 
 
 Once on the webpage, you need to upload a CSV file with the following format:
 
@@ -37,7 +39,7 @@ Once on the webpage, you need to upload a CSV file with the following format:
 | 2           | 1223          | 983       | 8707     |
 | 3           | 610           | 562       | 1762     |
 
-The header must follow the above example, and the data must be reel numbers.
+The headers must follow the above example, and the data must be reel numbers.
 
 ### API
 The application has an API that can be accessed using the following link **http://[yourServerAddress]/api**
