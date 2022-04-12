@@ -25,7 +25,9 @@ python waitressServer.py
 ```
 
 ## Usage
-The default port is the port 8050. You can change this directly in the code if you want to use a different port.
+The default port for the development server is the port 8050. You can change this directly in the code if you want to use a different port.
+
+The default port for the waitress server is defined by the **PORT** environment variable.
 
 ### Webpage
 You can access the webpage by going to the root address of your server. It will automatically be redirected to the **http://[yourServerAddress]/dash** page which contains the webApp 
@@ -62,11 +64,11 @@ You can find an example in the [test_requests.py](test_requests.py) file
 
 A Docker image of this project has been created in order to facilitate the deployment of the application. It can be found [here](https://hub.docker.com/repository/docker/flobaudry/employee-segmentation)
 
-To start the docker, you need to bind the ports. As said before, the default port of the application is **8050**.
+To start the docker, you need to bind the ports. As said before, the default port of the application is **8080**.
 
 If you have docker installed, you can run:
 ```bash
 docker pull flobaudry/employee-segmentation
-docker run -d -p 8050:8050 flobaudry/employee-segmentation
+docker run -d -p 8050:8080 flobaudry/employee-segmentation
 ```
 after that, you should be able to access the web application using [this address](http://127.0.0.1:8050/dash)
