@@ -102,9 +102,8 @@ def generate_pie_graphs(value):
 
 
 @app.callback(Output("collapse_button", "is_open"),
-              Input("process-button", "n_clicks"),
-              State("upload-employees", "contents"), prevent_initial_call=True)
-def show_collapse_button(button, contents):
+              Input("process-button", "n_clicks"), prevent_initial_call=True)
+def show_collapse_button(button):
     return True
 
 

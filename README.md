@@ -11,7 +11,7 @@ In order to run the program, you need to install all the requirements listed in 
 ```bash
 pip install -r requirements.txt
 ```
-The project has been written using python 3.9 but should work with older versions of python 3
+The project has been written using python 3.9 but should work with python 3.6+
 ## Installation
 
 There are two different launching files.

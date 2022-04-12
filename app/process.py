@@ -9,19 +9,21 @@ def parse_csv(contents, cluster_number):
     content_type, content_string = contents.split(",")
     decoded = base64.b64decode(content_string)
     df = pd.read_csv(io.StringIO(decoded.decode("utf-8")))
+    df, kmeans = modif_csv_and_categorize(cluster_number, df)
+    return df, kmeans
+
+
+def parse_csv_api(df, cluster_number):
+    df, kmeans = modif_csv_and_categorize(cluster_number, df)
+    return df
+
+
+def modif_csv_and_categorize(cluster_number, df):
     df.columns = df.columns.str.replace(" ", "")
     if not test_columns(df):
         raise ValueError
     df, kmeans = categorize(df, cluster_number)
     return df, kmeans
-
-
-def parse_csv_api(df, cluster_number):
-    df.columns = df.columns.str.replace(" ", "")
-    if not test_columns(df):
-        raise ValueError
-    df, kmeans = categorize(df, cluster_number)
-    return df
 
 
 def test_columns(df: pd.DataFrame):
