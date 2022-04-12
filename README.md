@@ -62,7 +62,7 @@ You can find an example in the [test_requests.py](test_requests.py) file
     
 ## Docker
 
-A Docker image of this project has been created in order to facilitate the deployment of the application. It can be found [here](https://hub.docker.com/repository/docker/flobaudry/employee-segmentation). It is based on the python3.9-slim image.
+A Docker image of this project has been created in order to facilitate the deployment of the application. It can be found [here](https://hub.docker.com/repository/docker/flobaudry/employee-segmentation). It is based on the python:3.9-slim image.
 
 To start the docker, you need to bind the ports. As said before, the default port of the application is **8080**.
 
